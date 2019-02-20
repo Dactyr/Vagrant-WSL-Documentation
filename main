@@ -91,7 +91,7 @@
 #Important note / Optional Steps
 <#
 If you are running HyperV on your Win10 Box, you will not be able to use VirtualBox properly
-There is a way to disable Hyper-V and clean it up fairly easy to allow you to use VirtualBox
+There is a way to disable Hyper-V and clean it up fairly easily to allow you to use VirtualBox
 This way is listed below
 #>
 
