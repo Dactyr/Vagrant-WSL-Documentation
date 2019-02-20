@@ -1,0 +1,105 @@
+#Guide to Seting up Windows 10 to use Git, Vagrant, VirtualBox, and Ansible all from the ATOM IDE
+#This guide is assuming you have a GitHub account
+
+#Install Git on Windows
+#Go to https://git-scm.com/download/win.
+#Download 64-bit Git for Windows.
+#Run the .exe file once it finishes downloading.
+
+#Download and install GitDesktop
+#Go to https://desktop.github.com/
+#Click the Download for Windows (64bit)
+  #This allows you to clone repositories from your github and then make changes and push changes to githuib through atom
+
+#Download and install ATOM.io
+#Go to https://atom.io/
+#Click Download
+#Install Atom with the downloaded file
+
+#Install WSL on Windows 10 Pro
+#Open PowerShell as Administrator and run:
+  Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
+#Restart Windows.
+
+#Install VirtualBox on Windows
+#Go to https://www.virtualbox.org/wiki/Downloads.
+#Click on Windows Hosts link.
+#Run the .exe file once it finishes downloading.
+#(Optional) Download and install the Extension Pack.
+
+#Install Ubuntu 18.04 LTS from Windows Store
+#Go to https://www.microsoft.com/en-us/p/ubuntu-1804-lts/9n9tngvndl3q#activetab=pivot:overviewtab.
+#Click the Get / Install option.
+#Run Ubuntu 18.04 from the Start menu.
+#Create a username and password when prompted.
+#Close the Ubuntu terminal window.
+
+#Install the required Atom Packages
+#In atom go to file, then settings, the look for +install, and type powershell in the search bar
+#Install the packages listed below
+  #language-powershell
+  #build-powershell
+  #atom-terminal-powershell
+  #ide-powershell
+    <#this last package has a known bug that is triggered by having powershell terminal open for a file that is being read as powershell
+    Then opening a secondary powershell labled file and closing the automatically opening powershell terminal for the second file
+    To fix this issue uninstall the ide-powershell package restart ATOM and reinstall the package (this dose not happen often and the developer has it as an issue to fix)
+    The error if it ever pops up will give a link to the current issue on the devs github#>
+    #A secondary limiation to the Powershell integrated console is that you cannot copy paste into it, with this it may be worth it to have VS code or Powershell ISE up
+
+#Install Python and PIP in WSL
+#Open atom with a Powershell integrated consol (PIC) and run
+  Bash.exe
+  #this will access the WSL instance in your PIC
+#Then Run
+  cd ~
+  sudo apt-get update
+  sudo apt-get dist-upgrade -y
+  sudo apt-get install python
+  mkdir downloads
+  cd downloads
+  curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+  python get-pip.py --user
+
+#Add the local bin directory to PATH:
+  echo 'export PATH="${PATH}:/home/dactyr/.local/bin"' >> ~/.bashrc
+#Note: Replace 'dactyr' with your actual username.
+
+#Install Ansible in WSL
+  pip install ansible --user
+
+#Install Vagrant in WSL
+#Go to https://www.vagrantup.com/downloads.html
+#Right-click and copy the link for the 64-bit Debian package.
+#Type the following in the WSL PIC terminal:
+  wget https://releases.hashicorp.com/vagrant/2.1.5/vagrant_2.1.5_x86_64.deb
+  dpkg -i vagrant_2.1.5_x86_64.deb
+  #Note: Replace the link and the .deb package name with the one you actually copied.
+  #You may need to do this in powershell ISE for the benefit of copy paste (or in WSL or VS code, whatever is pregerable)
+
+#Configure Vagrant in WSL to Use VirtualBox on Windows
+#Type the following in the terminal:
+  echo 'export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"' >> ~/.bashrc
+  echo 'export PATH="${PATH}:/mnt/c/Program Files/Oracle/VirtualBox"' >> ~/.bashrc
+  source ~/.bashrc
+
+#Try to create a VM using vagrant
+  vagrant init hashicorp/precise64
+  Vagrant up
+  #Note: This will download this VM and then install and turn it on in your VirtualBox instance
+
+#Important note / Optional Steps
+<#
+If you are running HyperV on your Win10 Box, you will not be able to use VirtualBox properly
+There is a way to disable Hyper-V and clean it up fairly easy to allow you to use VirtualBox
+This way is listed below
+#>
+
+#Disable HyperV to allow use of VirtualBox
+#Run these commands using Powershell as admin
+  #note these will take sometime to complete
+  Dism /Online /Cleanup-Image /RestoreHealth
+  Dism /Online /Cleanup-Image /StartComponentCleanup
+  sfc /scannow
+  Disable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-All
+  #once complete you should have no problem creating VMs with vagrant in VirtualBox
