@@ -1,15 +1,35 @@
+#Install Chocolatey
+Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+exit
+
 #Install Git on Windows
+choco install git.install
+
 #Download and install GitDesktop
+choco install github-desktop
+
 #Download and install ATOM.io
+choco install atom
+
+  #User required Action
+    #Install the required Atom Packages
+      #language-powershell
+      #build-powershell
+      #atom-terminal-powershell
+      #ide-powershell
+
+#Install VirtualBox on Windows
+choco install virtualbox
+
+#Install Vagrant on Windows
+choco install vagrant
+
 #Install WSL on Windows 10 Pro
 Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
-#Install VirtualBox on Windows
+
 #Install Ubuntu 18.04 LTS from Windows Store
-#Install the required Atom Packages
-  #language-powershell
-  #build-powershell
-  #atom-terminal-powershell
-  #ide-powershell
+choco install wsl-ubuntu-1804
+
 #Install Python and PIP in WSL
 Bash.exe
 cd ~
@@ -20,3 +40,19 @@ mkdir downloads
 cd downloads
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python get-pip.py --user
+
+#Install Ansible in WSL
+pip install ansible --user
+
+#Install Vagrant in WSL
+wget https://releases.hashicorp.com/vagrant/2.2.4/vagrant_2.2.4_x86_64.deb
+dpkg -i vagrant_2.2.4_x86_64.deb
+
+#Configure Vagrant in WSL to Use VirtualBox on Windows
+
+echo 'export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"' >> ~/.bashrc
+echo 'export PATH="${PATH}:/mnt/c/Program Files/Oracle/VirtualBox"' >> ~/.bashrc
+source ~/.bashrc
+
+vagrant init hashicorp/precise64
+Vagrant up
