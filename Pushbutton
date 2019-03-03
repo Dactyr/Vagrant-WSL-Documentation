@@ -1,0 +1,22 @@
+#Install Git on Windows
+#Download and install GitDesktop
+#Download and install ATOM.io
+#Install WSL on Windows 10 Pro
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
+#Install VirtualBox on Windows
+#Install Ubuntu 18.04 LTS from Windows Store
+#Install the required Atom Packages
+  #language-powershell
+  #build-powershell
+  #atom-terminal-powershell
+  #ide-powershell
+#Install Python and PIP in WSL
+Bash.exe
+cd ~
+sudo apt-get update
+sudo apt-get dist-upgrade -y
+sudo apt-get install python
+mkdir downloads
+cd downloads
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+python get-pip.py --user
